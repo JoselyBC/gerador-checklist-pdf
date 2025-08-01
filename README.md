@@ -92,3 +92,4 @@ Se você deseja alterar o código-fonte, adicionar turmas permanentemente ou rec
 ## 🧑‍💻 Autora
 
 Projeto desenvolvido por **Josely Castro**.
+[LinkedIn](https://www.linkedin.com/in/joselybcastro/) | [GitHub](https://github.com/joselyBC)
