@@ -72,6 +72,23 @@ Se você deseja alterar o código-fonte, adicionar turmas permanentemente ou rec
     *   `--windowed`: Impede que a janela de console (terminal) abra junto com o programa.
     *   O novo executável estará na pasta `dist` que será criada.
 
+7. **Como usar as funções:**
+
+*   **Para REMOVER uma turma da lista:**
+    1.  Clique com o mouse no nome da turma que você quer tirar. Ela ficará azul.
+    2.  Clique no botão **"Remover Selecionada"**. A turma desaparecerá da lista.
+
+*   **Para ADICIONAR uma turma nova:**
+    1.  Digite o nome da turma no campo ao lado de "Nova Turma".
+    2.  Clique no botão **"Adicionar"**. A nova turma aparecerá no final da lista.
+
+*   **Para GERAR o arquivo PDF:**
+    1.  Quando a lista de turmas estiver exatamente como você precisa, clique no botão azul grande **"Gerar PDF com a Lista Acima"**.
+    2.  Uma mensagem de "Sucesso" vai aparecer.
+    3.  Pronto! O arquivo PDF (com o nome `checklist_instrutores_...`) estará salvo na mesma pasta onde está o programa.
+
+É só isso! Você pode abrir e fechar o programa quantas vezes quiser. Para compartilhar com um colega, basta enviar o arquivo `gerarpdf.exe` para ele. do aplicativo, igual a documentação criada anteriormente.
+
 ## 🧑‍💻 Autora
 
 Projeto desenvolvido por **Josely Castro**.
