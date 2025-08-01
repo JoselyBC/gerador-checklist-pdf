@@ -5,7 +5,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from datetime import datetime
 
-# Lista inicial de turmas (Pode ser editada para adicionar turmas permanentemente)
+# Lista inicial de turmas (Editável)
 turmas = [
     ("Re/start 1 + IA - BRSAO175", "Instrutor(a) em sala?"),
     ("Re/start 1 + IA - BRSAO176", "Instrutor(a) em sala?"),
@@ -24,6 +24,10 @@ turmas = [
 
 def gerar_pdf(lista_turmas):
     """Função para gerar o PDF com a lista de turmas fornecida."""
+    if not lista_turmas:
+        messagebox.showerror("Erro", "A lista de turmas está vazia. Adicione uma turma antes de gerar o PDF.")
+        return
+
     data_hoje = datetime.today().strftime('%Y%m%d')
     nome_arquivo = f"checklist_instrutores_{data_hoje}.pdf"
     titulo = "Lista de Presença - Instrutores"
@@ -81,49 +85,67 @@ class App:
         self.root.title("Gerador de Checklist de Instrutores")
         self.root.geometry("500x500")
 
+        # Frame da lista
         self.frame_lista = tk.Frame(root)
         self.frame_lista.pack(pady=10, padx=10, fill="both", expand=True)
-
         self.label_lista = tk.Label(self.frame_lista, text="Turmas Atuais:")
         self.label_lista.pack()
-
         self.listbox_turmas = tk.Listbox(self.frame_lista, height=15)
         self.listbox_turmas.pack(fill="both", expand=True)
 
+        # Frame de ações (Adicionar/Remover)
+        self.frame_acoes = tk.Frame(root)
+        self.frame_acoes.pack(pady=5, padx=10, fill="x")
+
+        self.label_nova_turma = tk.Label(self.frame_acoes, text="Nova Turma:")
+        self.label_nova_turma.pack(side="left", padx=(0, 5))
+        self.entry_nova_turma = tk.Entry(self.frame_acoes)
+        self.entry_nova_turma.pack(side="left", fill="x", expand=True, padx=5)
+        self.btn_adicionar = tk.Button(self.frame_acoes, text="Adicionar", command=self.adicionar_turma)
+        self.btn_adicionar.pack(side="left", padx=5)
+        
+        # Botão de remoção
+        self.btn_remover = tk.Button(self.frame_acoes, text="Remover Selecionada", command=self.remover_turma, bg="#FF7F7F")
+        self.btn_remover.pack(side="left", padx=5)
+        
+        # Botão principal para gerar PDF
+        self.btn_gerar_pdf = tk.Button(root, text="Gerar PDF Com a Lista Acima", command=self.chamar_gerador_pdf, bg="#ADD8E6", height=2)
+        self.btn_gerar_pdf.pack(pady=10, padx=10, fill="x")
+
+        # Preenche a lista inicial
+        self.atualizar_listbox()
+
+    def atualizar_listbox(self):
+        self.listbox_turmas.delete(0, tk.END)
         for turma, _ in turmas:
             self.listbox_turmas.insert(tk.END, turma)
-
-        self.frame_botoes = tk.Frame(root)
-        self.frame_botoes.pack(pady=5)
-
-        self.label_nova_turma = tk.Label(self.frame_botoes, text="Nova Turma:")
-        self.label_nova_turma.pack(side="left", padx=5)
-
-        self.entry_nova_turma = tk.Entry(self.frame_botoes, width=30)
-        self.entry_nova_turma.pack(side="left", padx=5)
-
-        self.btn_adicionar = tk.Button(self.frame_botoes, text="Adicionar Turma", command=self.adicionar_turma)
-        self.btn_adicionar.pack(side="left", padx=5)
-
-        self.btn_gerar_pdf = tk.Button(root, text="Gerar PDF", command=self.chamar_gerador_pdf, bg="lightblue")
-        self.btn_gerar_pdf.pack(pady=10)
 
     def adicionar_turma(self):
         nova_turma_nome = self.entry_nova_turma.get()
         if nova_turma_nome:
             turmas.append((nova_turma_nome, "Instrutor(a) em sala?"))
-            self.listbox_turmas.insert(tk.END, nova_turma_nome)
+            self.atualizar_listbox()
             self.entry_nova_turma.delete(0, tk.END)
         else:
             messagebox.showwarning("Atenção", "O nome da turma não pode estar vazio.")
+            
+    def remover_turma(self):
+        selected_indices = self.listbox_turmas.curselection()
+        if not selected_indices:
+            messagebox.showwarning("Atenção", "Selecione uma turma na lista para remover.")
+            return
+        
+        # Pega o primeiro índice selecionado
+        index = selected_indices[0]
+        
+        # Remove da lista de dados e atualiza a interface
+        turmas.pop(index)
+        self.atualizar_listbox()
 
     def chamar_gerador_pdf(self):
-        if turmas:
-            gerar_pdf(turmas)
-        else:
-            messagebox.showerror("Erro", "Nenhuma turma na lista para gerar o PDF.")
+        gerar_pdf(turmas)
 
-# ESTE BLOCO É ESSENCIAL PARA INICIAR A JANELA GRÁFICA
+# Bloco principal para iniciar o programa
 if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
